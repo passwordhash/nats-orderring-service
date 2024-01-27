@@ -2,8 +2,10 @@ package main
 
 import (
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 	"nats_server/internal/handler"
+	"nats_server/pkg/repository"
 	"nats_server/pkg/server"
 	"os"
 )
@@ -14,6 +16,18 @@ func main() {
 	}
 
 	config := NewConfig()
+
+	_, err := repository.NewPostgresDB(repository.PSQLConfig{
+		Port:     os.Getenv("PSQL_PORT"),
+		Username: os.Getenv("PSQL_USER"),
+		Password: os.Getenv("PSQL_PASSWORD"),
+		DBName:   os.Getenv("PSQL_DB"),
+		SSLMode:  "disable",
+	})
+	if err != nil {
+		logrus.Fatalf("failed to initialize db: %s", err.Error())
+	}
+	logrus.Info("PostgreSQL connected")
 
 	handlers := handler.NewHandler()
 
