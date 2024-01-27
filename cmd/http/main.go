@@ -5,7 +5,9 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 	"nats_server/internal/handler"
-	"nats_server/pkg/repository"
+	"nats_server/internal/repository"
+	"nats_server/internal/service"
+	pkgRepo "nats_server/pkg/repository"
 	"nats_server/pkg/server"
 	"os"
 )
@@ -17,7 +19,7 @@ func main() {
 
 	config := NewConfig()
 
-	_, err := repository.NewPostgresDB(repository.PSQLConfig{
+	psqlDb, err := pkgRepo.NewPostgresDB(pkgRepo.PSQLConfig{
 		Port:     os.Getenv("PSQL_PORT"),
 		Username: os.Getenv("PSQL_USER"),
 		Password: os.Getenv("PSQL_PASSWORD"),
@@ -29,7 +31,9 @@ func main() {
 	}
 	logrus.Info("PostgreSQL connected")
 
-	handlers := handler.NewHandler()
+	repos := repository.NewRepository(psqlDb)
+	services := service.NewService(repos)
+	handlers := handler.NewHandler(services)
 
 	srv := new(server.Server)
 
