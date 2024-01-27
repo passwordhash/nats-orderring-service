@@ -1,0 +1,49 @@
+{
+  "order_uid": "123e4567-e89b-12d3-a456-426614174000",
+  "track_number": "ABC123TESTTRACK",
+  "entry": "ABCD",
+  "delivery": {
+    "name": "Jane Doe",
+    "phone": "+1234567890",
+    "zip": "1234567",
+    "city": "Test City",
+    "address": "Test Street 123",
+    "region": "Test Region",
+    "email": "jane.doe@gmail.com"
+  },
+  "payment": {
+    "transaction": "123e4567-e89b-12d3-a456-426614174000",
+    "request_id": "",
+    "currency": "EUR",
+    "provider": "testpay",
+    "amount": 2000,
+    "payment_dt": 1638917727,
+    "bank": "beta",
+    "delivery_cost": 500,
+    "goods_total": 1500,
+    "custom_fee": 0
+  },
+  "items": [
+    {
+      "chrt_id": 1234567,
+      "track_number": "ABC123TESTTRACK",
+      "price": 500,
+      "rid": "987e6543-e21b-98d2-b321-426614174000",
+      "name": "Test Item",
+      "sale": 20,
+      "size": "1",
+      "total_price": 1500,
+      "nm_id": 1234567,
+      "brand": "Test Brand",
+      "status": 404
+    }
+  ],
+  "locale": "fr",
+  "internal_signature": "",
+  "customer_id": "jane.doe",
+  "delivery_service": "testdelivery",
+  "shardkey": "1",
+  "sm_id": 1,
+  "date_created": "2022-12-12T12:12:12Z",
+  "oof_shard": "2"
+}
