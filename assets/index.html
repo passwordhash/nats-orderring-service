@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wildberries Order Info</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js"
+            integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <style>
+        body {
+            padding-bottom: 50px;
+            background-color: #f0f0f0;
+        }
+
+        .navbar, .footer {
+            background-color: #8b008b;
+        }
+
+        .navbar-brand, .footer a {
+            color: #ffffff;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            flex-basis: calc(33.33% - 20px);
+            flex-shrink: 0;
+            flex-grow: 0;
+            margin-right: 20px;
+        }
+
+        .form-group:last-child {
+        }
+
+        .form-group input {
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-dark">
+    <a class="navbar-brand" href="#"><i class="fas fa-shopping-cart"></i> Wildberries</a>
+</nav>
+
+<div class="container mt-5">
+    <h2 class="mb-3">Enter Order ID</h2>
+    <input id="input_uid" type="text" class="form-control" id="orderId" placeholder="Enter Order ID">
+    <button id="get_info" class="btn btn-primary mt-3">Get Order Info</button>
+
+    <hr />
+    <div class="mt-5">
+        <h3 class="mb-3">Order Information:</h3>
+        <div id="orderInfo" class="order-info">
+
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <a href="https://github.com/passwordhash" target="_blank">
+        <i class="fab fa-github"></i> Created by Yaroslav Molodcov
+    </a>
+</footer>
+
+<script type="text/javascript">
+
+    const baseUrl = 'http://localhost:8010/api/';
+    const inputUid = document.getElementById('input_uid');
+    const getInfo = document.getElementById('get_info');
+
+    const info = document.getElementById('orderInfo');
+
+    getInfo.addEventListener("click", function () {
+        axios({
+            url: baseUrl + 'order/' + inputUid.value,
+            method: 'GET',
+        })
+            .then(function (response) {
+                displayData(response.data)
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    })
+
+    function clear() {
+        info.innerHTML = '';
+    }
+
+    function displayData(data) {
+        clear();
+        console.log(data)
+
+        let section = addSection('');
+        for (const [key, value] of Object.entries(data)) {
+            if (value instanceof Array || value instanceof Object) {
+                continue
+            }
+            addToForm({key, value}, section);
+        }
+
+        section = addSection('Delivery');
+        for (const [key, value] of Object.entries(data.delivery)) {
+            addToForm({key, value}, section);
+        }
+
+        section = addSection('Payment');
+        for (const [key, value] of Object.entries(data.payment)) {
+            addToForm({key, value}, section);
+        }
+
+        section = addSection('Items');
+        data.items.forEach(function (item) {
+            for (const [key, value] of Object.entries(item)) {
+                addToForm({key, value}, section);
+            }
+            addDivider(section);
+        })
+    }
+
+    function addSection(title) {
+        const section = document.createElement('div');
+        section.className = 'section';
+
+        const hWrapper = document.createElement('div');
+        hWrapper.className = 'w-100 mb-3';
+
+        const sectionTitle = document.createElement('h3');
+        sectionTitle.textContent = title;
+
+        hWrapper.appendChild(sectionTitle)
+        section.appendChild(hWrapper);
+
+        info.appendChild(section);
+
+        return section
+    }
+
+    function addDivider(el) {
+        const divider = document.createElement('hr');
+        divider.className = 'w-100';
+        el.appendChild(divider);
+    }
+
+    function addToForm(map, form) {
+        const formGroup = document.createElement('div');
+        formGroup.className = 'form-group';
+
+        const label = document.createElement('label');
+        label.textContent = map.key;
+        label.htmlFor = map.key;
+        formGroup.appendChild(label);
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = map.key;
+        input.className = 'form-control';
+        input.disabled = true;
+        input.value = map.value;
+        formGroup.appendChild(input);
+
+        form.appendChild(formGroup);
+    }
+
+</script>
+
+<!-- Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
