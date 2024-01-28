@@ -17,11 +17,17 @@ func NewHandler(services *service.Service) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	app := gin.New()
 
+	//app.Use(CORSMiddleware())
+
+	app.Static("/assets", "./assets")
+
+	app.StaticFile("/", "./assets/index.html")
+
 	api := app.Group("/api")
 
-	api.GET("/:id", h.get)
+	api.GET("/order/:id", h.get)
 
-	api.GET("/", h.getAll)
+	api.GET("/orders", h.getAll)
 
 	return app
 }

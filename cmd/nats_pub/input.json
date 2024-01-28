@@ -1,5 +1,5 @@
 {
-  "order_uid": "123e4567-e89b-12d3-a456-426614174000",
+  "order_uid": "123e4567-e89b-12d3-a456-426614174999",
   "track_number": "ABC123TESTTRACK",
   "entry": "ABCD",
   "delivery": {
@@ -12,7 +12,7 @@
     "email": "jane.doe@gmail.com"
   },
   "payment": {
-    "transaction": "123e4567-e89b-12d3-a456-426614174000",
+    "transaction": "123e4567-e89b-12d3-a456-426614174999",
     "request_id": "",
     "currency": "EUR",
     "provider": "testpay",
@@ -25,11 +25,24 @@
   },
   "items": [
     {
-      "chrt_id": 1234567,
+      "chrt_id": 12567,
       "track_number": "ABC123TESTTRACK",
       "price": 500,
       "rid": "987e6543-e21b-98d2-b321-426614174000",
       "name": "Test Item",
+      "sale": 20,
+      "size": "1",
+      "total_price": 1500,
+      "nm_id": 1234567,
+      "brand": "Test Brand",
+      "status": 404
+    },
+    {
+      "chrt_id": 123467,
+      "track_number": "ABC123TESTTRACK",
+      "price": 500,
+      "rid": "987e6543-e21b-98d2-b321-426614174000",
+      "name": "Test Item2",
       "sale": 20,
       "size": "1",
       "total_price": 1500,
