@@ -35,9 +35,7 @@ func main() {
 
 	log.Println("Connected to " + URL)
 
-	//for {
 	if err := sc.Publish("foo", b); err != nil {
 		log.Printf("Error during publish: %v\n", err)
 	}
-	//}
 }

@@ -2,24 +2,12 @@ package repository
 
 import (
 	"errors"
-	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
 	"nats_server/internal/entity"
 )
 
-var OrderNotFoundErr = errors.New("order not found")
-var AdditionsNotFoundErr = errors.New("some of addition inforamation about order not found")
-
-type OrderRepository struct {
-	psqlDb *sqlx.DB
-}
-
-func NewOrderPostgres(psqlDb *sqlx.DB) *OrderRepository {
-	return &OrderRepository{psqlDb: psqlDb}
-}
-
 func (r *OrderRepository) Create(o entity.Order) (string, error) {
-	tx, err := r.psqlDb.Beginx()
+	tx, err := r.psqlDB.Beginx()
 	if err != nil {
 		return "", err
 	}
@@ -70,7 +58,7 @@ func (r *OrderRepository) Create(o entity.Order) (string, error) {
 func (r *OrderRepository) GetWithAddition(orderUID string) (entity.Order, error) {
 	var order entity.Order
 
-	err := r.psqlDb.Get(&order, "SELECT * FROM orders WHERE order_uid = $1", orderUID)
+	err := r.psqlDB.Get(&order, "SELECT * FROM orders WHERE order_uid = $1", orderUID)
 	if err != nil {
 		return order, OrderNotFoundErr
 	}
@@ -83,7 +71,7 @@ func (r *OrderRepository) GetWithAddition(orderUID string) (entity.Order, error)
 func (r *OrderRepository) GetWithAdditionList() ([]entity.Order, error) {
 	var list []entity.Order
 
-	err := r.psqlDb.Select(&list, "SELECT * FROM orders")
+	err := r.psqlDB.Select(&list, "SELECT * FROM orders")
 	if err != nil {
 		return nil, err
 	}
@@ -102,17 +90,17 @@ func (r *OrderRepository) GetWithAdditionList() ([]entity.Order, error) {
 
 // enrichOrder enriches order with addition information
 func (r *OrderRepository) enrichOrder(order *entity.Order) error {
-	err := r.psqlDb.Get(&order.Delivery, "SELECT * FROM delivery WHERE order_uid = $1", order.OrderUID)
+	err := r.psqlDB.Get(&order.Delivery, "SELECT * FROM delivery WHERE order_uid = $1", order.OrderUID)
 	if err != nil {
 		return errors.Join(AdditionsNotFoundErr, err)
 	}
 
-	err = r.psqlDb.Get(&order.Payment, "SELECT * FROM payment WHERE order_uid = $1", order.OrderUID)
+	err = r.psqlDB.Get(&order.Payment, "SELECT * FROM payment WHERE order_uid = $1", order.OrderUID)
 	if err != nil {
 		return errors.Join(AdditionsNotFoundErr, err)
 	}
 
-	err = r.psqlDb.Select(&order.Items, "SELECT * FROM items WHERE order_uid = $1", order.OrderUID)
+	err = r.psqlDB.Select(&order.Items, "SELECT * FROM items WHERE order_uid = $1", order.OrderUID)
 
 	return nil
 }

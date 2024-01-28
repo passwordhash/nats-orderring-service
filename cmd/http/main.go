@@ -7,34 +7,40 @@ import (
 	"nats_server/internal/handler"
 	"nats_server/internal/repository"
 	"nats_server/internal/service"
-	pkgRepo "nats_server/pkg/repository"
 	"nats_server/pkg/server"
 	"os"
 )
 
 func main() {
+	// Load env variables
 	if err := godotenv.Load(".env"); err != nil {
 		logrus.Fatalf("cannot load env file: %v", err.Error())
 	}
 
 	config := NewConfig()
 
-	psqlDb, err := pkgRepo.NewPostgresDB(pkgRepo.PSQLConfig{
-		Port:     os.Getenv("PSQL_PORT"),
-		Username: os.Getenv("PSQL_USER"),
-		Password: os.Getenv("PSQL_PASSWORD"),
-		DBName:   os.Getenv("PSQL_DB"),
-		SSLMode:  "disable",
-	})
+	// Connect to PostgreSQL
+	psqlDB, err := repository.NewDefaultPsqlDB()
 	if err != nil {
 		logrus.Fatalf("failed to initialize db: %s", err.Error())
 	}
+	defer psqlDB.Close()
 	logrus.Info("PostgreSQL connected")
 
-	repos := repository.NewRepository(psqlDb)
+	// Connect to Redis
+	redisDB, err := repository.NewDefaultRedisDB()
+	if err != nil {
+		logrus.Fatalf("failed to initialize db: %s", err.Error())
+	}
+	defer redisDB.Close()
+	logrus.Info("Redis connected")
+
+	// Initialize repositories, services and handlers
+	repos := repository.NewRepository(psqlDB, redisDB)
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
 
+	// Initialize HTTP Server
 	srv := new(server.Server)
 
 	logrus.Infof("Try to start HTTP Server on port %s ...", config.HttpPort)

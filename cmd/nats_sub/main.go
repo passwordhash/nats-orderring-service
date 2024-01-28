@@ -10,7 +10,6 @@ import (
 	"nats_server/internal/nats"
 	"nats_server/internal/repository"
 	"nats_server/internal/service"
-	pkgRepo "nats_server/pkg/repository"
 	"os"
 	"os/signal"
 )
@@ -24,18 +23,16 @@ func main() {
 		panic(err)
 	}
 
-	psqlDb, err := pkgRepo.NewPostgresDB(pkgRepo.PSQLConfig{
-		Port:     os.Getenv("PSQL_PORT"),
-		Username: os.Getenv("PSQL_USER"),
-		Password: os.Getenv("PSQL_PASSWORD"),
-		DBName:   os.Getenv("PSQL_DB"),
-		SSLMode:  "disable",
-	})
+	psqlDb, err := repository.NewDefaultPsqlDB()
+	if err != nil {
+		panic(err)
+	}
+	redisDb, err := repository.NewDefaultRedisDB()
 	if err != nil {
 		panic(err)
 	}
 
-	repos := repository.NewRepository(psqlDb)
+	repos := repository.NewRepository(psqlDb, redisDb)
 	services := service.NewService(repos)
 
 	clientID := uuid.New().String()
@@ -66,10 +63,6 @@ func main() {
 	go func() {
 		for range signalChan {
 			fmt.Printf("\nReceived an interrupt, unsubscribing and closing connection...\n\n")
-			// Do not unsubscribe a durable on exit, except if asked to.
-			//if durable == "" || unsubscribe {
-			//	sub.Unsubscribe()
-			//}
 			sub.Unsubscribe()
 			sc.Close()
 			cleanupDone <- true

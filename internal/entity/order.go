@@ -20,6 +20,10 @@ type Order struct {
 	Items    []Item   `db:"-" json:"items"`
 }
 
+func (o *Order) IsEmpty() bool {
+	return o.OrderUID == ""
+}
+
 type Delivery struct {
 	OrderUID string `db:"order_uid" json:"order_uid"`
 	Name     string `db:"name" json:"name"`
