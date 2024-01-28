@@ -8,6 +8,7 @@ import (
 )
 
 var OrderAlreadyExistsErr = errors.New("order already exists")
+var OrderNotFoundErr = errors.New("order not found")
 
 type OrderService struct {
 	repo repository.Order
@@ -44,6 +45,9 @@ func (s *OrderService) Get(orderUID string) (entity.Order, error) {
 	}
 
 	order, err = s.repo.GetWithAddition(orderUID)
+	if order.IsEmpty() {
+		return order, errors.Join(OrderNotFoundErr, err)
+	}
 	if err != nil {
 		return order, err
 	}

@@ -5,6 +5,8 @@ import (
 	"nats_server/internal/repository"
 )
 
+//go:generate mockgen -source=service.go -destination=mocks/mock.go
+
 type Order interface {
 	Create(order entity.Order) (string, error)
 	Get(orderUID string) (entity.Order, error)

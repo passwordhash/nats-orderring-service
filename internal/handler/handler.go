@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"nats_server/internal/service"
+	"strings"
 )
 
 type Handler struct {
@@ -36,6 +37,12 @@ func (h *Handler) get(c *gin.Context) {
 	id := c.Param("id")
 
 	order, err := h.services.Order.Get(id)
+	if err != nil && strings.Contains(err.Error(), service.OrderNotFoundErr.Error()) {
+		c.JSON(400, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
 	if err != nil {
 		logrus.Error(err)
 		c.JSON(500, gin.H{
