@@ -12,11 +12,11 @@ func HandleMessage(m *stan.Msg, service *service.Service) {
 	var order entity.Order
 
 	if err := json.Unmarshal(m.Data, &order); err != nil {
-		logrus.Error(m)
+		logrus.Errorf("Error during unmarshal: %s", err)
 		return
 	}
 
-	logrus.Info(order)
+	logrus.Infof("Received a message: %s\n", string(m.Data))
 
 	if _, err := service.Create(order); err != nil {
 		logrus.Error(err)
