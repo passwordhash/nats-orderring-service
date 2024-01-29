@@ -25,7 +25,7 @@ func (o *Order) IsEmpty() bool {
 }
 
 type Delivery struct {
-	OrderUID string `db:"order_uid" json:"order_uid"`
+	OrderUID string `db:"order_uid" json:"-"`
 	Name     string `db:"name" json:"name"`
 	Phone    string `db:"phone" json:"phone"`
 	Zip      string `db:"zip" json:"zip"`
@@ -37,7 +37,6 @@ type Delivery struct {
 
 type Payment struct {
 	Transaction  string  `db:"transaction" json:"transaction"`
-	OrderUID     string  `db:"order_uid" json:"order_uid"`
 	RequestID    string  `db:"request_id" json:"request_id"`
 	Currency     string  `db:"currency" json:"currency"`
 	Provider     string  `db:"provider" json:"provider"`
@@ -51,7 +50,7 @@ type Payment struct {
 
 type Item struct {
 	ChrtID      int     `db:"chrt_id" json:"chrt_id"`
-	OrderUID    string  `db:"order_uid" json:"order_uid"`
+	OrderUID    string  `db:"order_uid" json:"-"`
 	TrackNumber string  `db:"track_number" json:"track_number"`
 	Price       float64 `db:"price" json:"price"`
 	RID         string  `db:"rid" json:"rid"`

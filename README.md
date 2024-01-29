@@ -4,8 +4,8 @@
 
 ![simple interface](./assets/interface.png)
 
-### WGK benchmark
+### WRK benchmark
 
 - Бенчмарк на 30 секунд, используя 12 потоков и поддерживая 400 открытых HTTP-соединений.
 
-![wgk benchmark](./assets/wgk.png)
+![wgk benchmark](./assets/wrk.svg)

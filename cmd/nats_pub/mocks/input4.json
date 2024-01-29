@@ -1,0 +1,62 @@
+{
+  "order_uid": "e1234567890f1234test",
+  "track_number": "DEFCBA123TRACK",
+  "entry": "DEFC",
+  "delivery": {
+    "name": "Bob Smith",
+    "phone": "+1122334455",
+    "zip": "556677",
+    "city": "Everywhere",
+    "address": "Third Street 789",
+    "region": "Everyregion",
+    "email": "bobsmith@example.com"
+  },
+  "payment": {
+    "transaction": "e1234567890f1234test",
+    "request_id": "",
+    "currency": "GBP",
+    "provider": "defPay",
+    "amount": 3456,
+    "payment_dt": 1678903456,
+    "bank": "gamma",
+    "delivery_cost": 3000,
+    "goods_total": 456,
+    "custom_fee": 0
+  },
+  "items": [
+    {
+      "chrt_id": 3456789,
+      "track_number": "DEFCBA123TRACK",
+      "price": 789,
+      "rid": "gh1234567890ij1234test",
+      "name": "Blush",
+      "sale": 28,
+      "size": "3",
+      "total_price": 456,
+      "nm_id": 3456789,
+      "brand": "Bob's Cosmetics",
+      "status": 202
+    },
+    {
+      "chrt_id": 2876543,
+      "track_number": "DEFCBA123TRACK",
+      "price": 633,
+      "rid": "ef4219087a764ae0btest",
+      "name": "Foundation",
+      "sale": 32,
+      "size": "0",
+      "total_price": 499,
+      "nm_id": 6257983,
+      "brand": "L'Oreal",
+      "status": 202
+    }
+  ],
+  "locale": "en",
+  "internal_signature": "",
+  "customer_id": "test",
+  "delivery_service": "ups",
+  "shardkey": "10",
+  "sm_id": 100,
+  "date_created": "2024-02-01T12:34:56Z",
+  "oof_shard": "4"
+}

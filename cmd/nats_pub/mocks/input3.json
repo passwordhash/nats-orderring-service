@@ -1,0 +1,62 @@
+{
+  "order_uid": "c1234567890d1234test",
+  "track_number": "ABCCBA123TRACK",
+  "entry": "ABCC",
+  "delivery": {
+    "name": "Jane Doe",
+    "phone": "+0987654321",
+    "zip": "123456",
+    "city": "Somewhere",
+    "address": "Second Street 456",
+    "region": "Someregion",
+    "email": "janedoe@example.com"
+  },
+  "payment": {
+    "transaction": "c1234567890d1234test",
+    "request_id": "",
+    "currency": "USD",
+    "provider": "abcPay",
+    "amount": 2345,
+    "payment_dt": 1678902345,
+    "bank": "alpha",
+    "delivery_cost": 2000,
+    "goods_total": 345,
+    "custom_fee": 0
+  },
+  "items": [
+    {
+      "chrt_id": 2345678,
+      "track_number": "ABCCBA123TRACK",
+      "price": 678,
+      "rid": "ef1234567890gh1234test",
+      "name": "Eye Shadows",
+      "sale": 25,
+      "size": "2",
+      "total_price": 345,
+      "nm_id": 2345678,
+      "brand": "Jane's Cosmetics",
+      "status": 202
+    },
+    {
+      "chrt_id": 1987654,
+      "track_number": "ABCCBA123TRACK",
+      "price": 543,
+      "rid": "cd4219087a764ae0btest",
+      "name": "Lip Gloss",
+      "sale": 35,
+      "size": "0",
+      "total_price": 408,
+      "nm_id": 4321987,
+      "brand": "Estee Lauder",
+      "status": 202
+    }
+  ],
+  "locale": "en",
+  "internal_signature": "",
+  "customer_id": "test",
+  "delivery_service": "fedex",
+  "shardkey": "9",
+  "sm_id": 99,
+  "date_created": "2024-01-31T12:34:56Z",
+  "oof_shard": "3"
+}
