@@ -1,0 +1,62 @@
+{
+  "order_uid": "a1234567890b1234test",
+  "track_number": "XYZABC123TRACK",
+  "entry": "XYZA",
+  "delivery": {
+    "name": "John Doe",
+    "phone": "+1234567890",
+    "zip": "987654",
+    "city": "Anytown",
+    "address": "Main Street 123",
+    "region": "Anyregion",
+    "email": "johndoe@example.com"
+  },
+  "payment": {
+    "transaction": "a1234567890b1234test",
+    "request_id": "",
+    "currency": "EUR",
+    "provider": "xyzpay",
+    "amount": 1234,
+    "payment_dt": 1678901234,
+    "bank": "beta",
+    "delivery_cost": 1000,
+    "goods_total": 234,
+    "custom_fee": 0
+  },
+  "items": [
+    {
+      "chrt_id": 1234567,
+      "track_number": "XYZABC123TRACK",
+      "price": 567,
+      "rid": "cd1234567890ef1234test",
+      "name": "Lipsticks",
+      "sale": 20,
+      "size": "1",
+      "total_price": 234,
+      "nm_id": 1234567,
+      "brand": "John's Cosmetics",
+      "status": 202
+    },
+    {
+      "chrt_id": 1094930,
+      "track_number": "XYZABC123TRACK",
+      "price": 453,
+      "rid": "ab4219087a764ae0btest",
+      "name": "Mascaras",
+      "sale": 30,
+      "size": "0",
+      "total_price": 317,
+      "nm_id": 2389212,
+      "brand": "Vivienne Sabo",
+      "status": 202
+    }
+  ],
+  "locale": "en",
+  "internal_signature": "",
+  "customer_id": "test",
+  "delivery_service": "dhl",
+  "shardkey": "8",
+  "sm_id": 88,
+  "date_created": "2024-01-30T12:34:56Z",
+  "oof_shard": "2"
+}

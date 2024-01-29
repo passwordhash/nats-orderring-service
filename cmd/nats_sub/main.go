@@ -14,14 +14,20 @@ import (
 	"os/signal"
 )
 
-var URL = "nats://localhost:4222"
-var clusterID = "test-cluster"
-var clientID = "test-client"
+var (
+	URL string
+
+	clusterID   = "test-cluster"
+	clientID    = "test-client"
+	durableName = "foo"
+)
 
 func main() {
 	if err := godotenv.Load(".env"); err != nil {
 		panic(err)
 	}
+
+	URL = fmt.Sprintf("nats://localhost:%s", os.Getenv("NATS_PORT"))
 
 	psqlDb, err := repository.NewDefaultPsqlDB()
 	if err != nil {
@@ -48,10 +54,11 @@ func main() {
 
 	// Subscribe to subject
 	startOpt := stan.StartAt(0)
+	//startOpt := stan.StartWithLastReceived()
 
-	sub, err := sc.QueueSubscribe("foo", "bar", func(msg *stan.Msg) {
+	_, err = sc.QueueSubscribe("foo", "bar", func(msg *stan.Msg) {
 		nats.HandleMessage(msg, services)
-	}, startOpt)
+	}, startOpt, stan.DurableName(durableName))
 	if err != nil {
 		sc.Close()
 		log.Fatalf("Error during subscribe: %v\n", err)
@@ -63,7 +70,7 @@ func main() {
 	go func() {
 		for range signalChan {
 			fmt.Printf("\nReceived an interrupt, unsubscribing and closing connection...\n\n")
-			sub.Unsubscribe()
+			//sub.Unsubscribe()
 			sc.Close()
 			cleanupDone <- true
 		}

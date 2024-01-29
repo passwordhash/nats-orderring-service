@@ -22,7 +22,7 @@ func NewOrderService(repo repository.Order) *OrderService {
 
 func (s *OrderService) Create(order entity.Order) (string, error) {
 	condidate, _ := s.repo.GetWithAddition(order.OrderUID)
-	if condidate.OrderUID != "" {
+	if !condidate.IsEmpty() {
 		return "", OrderAlreadyExistsErr
 	}
 

@@ -2,7 +2,6 @@ package repository
 
 import (
 	"errors"
-	"github.com/sirupsen/logrus"
 	"nats_server/internal/entity"
 )
 
@@ -32,10 +31,11 @@ func (r *OrderRepository) Create(o entity.Order) (string, error) {
 		return "", err
 	}
 
+	// new payment
 	_, err = tx.Exec(`
-	INSERT INTO payment (transaction, order_uid, request_id, currency, provider, amount, payment_dt, bank, delivery_cost, goods_total, custom_fee)
-	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
-		o.Payment.Transaction, o.OrderUID, o.Payment.RequestID, o.Payment.Currency, o.Payment.Provider, o.Payment.Amount, o.Payment.PaymentDt, o.Payment.Bank, o.Payment.DeliveryCost, o.Payment.GoodsTotal, o.Payment.CustomFee)
+	INSERT INTO payment (transaction, request_id, currency, provider, amount, payment_dt, bank, delivery_cost, goods_total, custom_fee)
+	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+		o.Payment.Transaction, o.Payment.RequestID, o.Payment.Currency, o.Payment.Provider, o.Payment.Amount, o.Payment.PaymentDt, o.Payment.Bank, o.Payment.DeliveryCost, o.Payment.GoodsTotal, o.Payment.CustomFee)
 	if err != nil {
 		tx.Rollback()
 		return "", err
@@ -76,8 +76,6 @@ func (r *OrderRepository) GetWithAdditionList() ([]entity.Order, error) {
 		return nil, err
 	}
 
-	logrus.Info(list)
-
 	for i := range list {
 		err = r.enrichOrder(&list[i])
 		if err != nil {
@@ -95,7 +93,7 @@ func (r *OrderRepository) enrichOrder(order *entity.Order) error {
 		return errors.Join(AdditionsNotFoundErr, err)
 	}
 
-	err = r.psqlDB.Get(&order.Payment, "SELECT * FROM payment WHERE order_uid = $1", order.OrderUID)
+	err = r.psqlDB.Get(&order.Payment, "SELECT * FROM payment WHERE transaction = $1", order.OrderUID)
 	if err != nil {
 		return errors.Join(AdditionsNotFoundErr, err)
 	}
