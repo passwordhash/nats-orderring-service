@@ -1,5 +1,11 @@
+### Simple interface
+
+- Простой интерфейс для работы с HTTP-сервером.
+
+![simple interface](./assets/interface.png)
+
 ### WGK benchmark
 
-- Run a benchmark for 30 seconds, using 12 threads, and keeping 400 HTTP connections open.
+- Бенчмарк на 30 секунд, используя 12 потоков и поддерживая 400 открытых HTTP-соединений.
 
 ![wgk benchmark](./assets/wgk.png)
