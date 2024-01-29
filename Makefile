@@ -12,12 +12,7 @@ export
 
 run:
 	docker-compose up -d
-#	PSQL_USER=$(PSQL_USER) \
-#	PSQL_PASSWORD=$(PSQL_PASSWORD) \
-#	PSQL_DB=$(PSQL_DB) \
-#    POSTGRES_PORT=$(POSTGRES_PORT) \
-#    NATS_PORT=$(NATS_PORT) \
-#    NATS_MONITOR_PORT=$(NATS_MONITOR_PORT) \
+
 
 stop:
 	docker-compose down

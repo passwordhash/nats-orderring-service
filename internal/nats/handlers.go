@@ -15,6 +15,10 @@ func HandleMessage(m *stan.Msg, service *service.Service) {
 		logrus.Errorf("Error during unmarshal: %s", err)
 		return
 	}
+	if order.IsEmpty() {
+		logrus.Errorf("Invalid data: %s", m)
+		return
+	}
 
 	logrus.Infof("Received a message: %s\n", string(m.Data))
 

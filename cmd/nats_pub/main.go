@@ -54,7 +54,7 @@ func main() {
 	for _, v := range os.Args[posArgs:] {
 		b, err := readInput("./cmd/nats_pub/mocks/" + v)
 		if err != nil {
-			logrus.Error("Error during read input")
+			logrus.Errorf("Error during read input: %s", err.Error())
 			continue
 		}
 
